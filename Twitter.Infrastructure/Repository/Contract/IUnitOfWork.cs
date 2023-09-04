@@ -8,5 +8,7 @@ public interface IUnitOfWork : IDisposable
 
     ITagRepository TagRepository { get; }
 
-    Task Save();
+    Task SaveAsync();
+
+    bool Save();
 }

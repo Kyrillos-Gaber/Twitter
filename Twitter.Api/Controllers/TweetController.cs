@@ -44,4 +44,22 @@ public class TweetController : ControllerBase
         
         return CreatedAtRoute("GetTweet", new { id = res.Id }, res );
     }
+
+    [HttpDelete("{id:Guid}")] 
+    public IActionResult Delete(Guid id)
+    {
+        _tweetService.Delete(id);
+
+        return NoContent();
+    }
+
+    [HttpPut]
+    public IActionResult Update([FromBody] ReadTweetDto readTweet)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var tweet = _tweetService.Update(readTweet);
+        return Ok(tweet);
+    }
 }

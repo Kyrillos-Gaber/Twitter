@@ -2,7 +2,7 @@
 
 public class AuditableEntity
 {
-    public DateTime CreatedAt { get; set; }
-    
-    public DateTime LastUpdateAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+    public DateTime? LastUpdateAt { get; set; } = DateTime.Now;
 }

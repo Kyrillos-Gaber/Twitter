@@ -27,8 +27,13 @@ public class UnitOfWork : IUnitOfWork
         GC.SuppressFinalize(this);
     }
 
-    public async Task Save()
+    public async Task SaveAsync()
     {
         await _dbContext.SaveChangesAsync();
+    }
+
+    public bool Save()
+    {
+        return _dbContext.SaveChanges() > 0 ;
     }
 }

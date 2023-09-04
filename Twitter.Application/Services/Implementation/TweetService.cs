@@ -22,9 +22,16 @@ public class TweetService : ITweetService
         // Destination => Source
         var tweet = _mapper.Map<Tweet>(tweetDto);
         await _unitOfWork.TweetRepository.AddAsync(tweet);
-        await _unitOfWork.Save();
+        await _unitOfWork.SaveAsync();
         
         return _mapper.Map<ReadTweetDto>(tweet);
+    }
+
+    public void Delete(Guid id)
+    {
+        _unitOfWork.TweetRepository.Delete(id);
+        if (!_unitOfWork.Save())
+            throw new Exception("can not delete!");
     }
 
     public async Task<ReadTweetDto> Get(Guid id)
@@ -37,5 +44,14 @@ public class TweetService : ITweetService
     {
         var tweets = await _unitOfWork.TweetRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<ReadTweetDto>>(tweets);
+    }
+
+    public ReadTweetDto Update(ReadTweetDto tweetDto)
+    {
+        var tweet = _mapper.Map<Tweet>(tweetDto);
+        tweet.LastUpdateAt = DateTime.Now;
+        _unitOfWork.TweetRepository.Update(tweet);
+        _unitOfWork.Save();
+        return _mapper.Map<ReadTweetDto>(tweet);
     }
 }

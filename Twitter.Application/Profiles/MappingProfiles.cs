@@ -18,7 +18,8 @@ public class MappingProfiles : Profile
             .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.Content))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
             .ForMember(dest => dest.LastUpdateAt, opt => opt.MapFrom(src => src.LastUpdateAt))
-            .ForMember(dest => dest.Audience, opt => opt.MapFrom(src => src.Audience));
+            .ForMember(dest => dest.Audience, opt => opt.MapFrom(src => src.Audience))
+            .ReverseMap();
 
     }
 }

@@ -22,15 +22,15 @@ public class Repository<T> : IRepository<T> where T : class
         _dbContext.Set<T>().Remove(entity);
     }
 
-    public async void Delete(Guid id)
+    public void Delete(Guid id)
     {
-        var e = await GetAsync(id);
+        var e = GetById(id);
         Delete(e);
     }
 
-    public async void Delete(int id)
+    public void Delete(int id)
     {
-        var e = await GetAsync(id);
+        var e = GetById(id);
         Delete(e);
     }
 
@@ -49,6 +49,18 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task<T> GetAsync(Guid id)
     {
         var res = await _dbContext.Set<T>().FindAsync(id);
+        return res!;
+    }
+
+    public T GetById(int id)
+    {
+        var res = _dbContext.Set<T>().Find(id);
+        return res!;
+    }
+
+    public T GetById(Guid id)
+    {
+        var res = _dbContext.Set<T>().Find(id);
         return res!;
     }
 
