@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Twitter.Application\Twitter.Application.csproj" />
     <ProjectReference Include="..\Twitter.Infrastructure\Twitter.Infrastructure.csproj" />
   </ItemGroup>

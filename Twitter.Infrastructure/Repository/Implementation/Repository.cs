@@ -36,7 +36,7 @@ public class Repository<T> : IRepository<T> where T : class
 
     public async Task<IEnumerable<T>> GetAllAsync()
     {
-        var res = await _dbContext.Set<T>().Take(1..10).ToListAsync();
+        var res = await _dbContext.Set<T>().Skip(0).Take(10).ToListAsync();
         return res;
     }
 

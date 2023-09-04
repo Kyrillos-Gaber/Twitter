@@ -1,4 +1,5 @@
-﻿using Twitter.Infrastructure;
+﻿using Twitter.Application;
+using Twitter.Infrastructure;
 
 namespace Twitter.Api;
 
@@ -14,6 +15,7 @@ public static class StartupExtensions
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddInfrastructureServices(builder.Configuration);
+        builder.Services.AddApplicationServices();
 
         return builder.Build();
     }

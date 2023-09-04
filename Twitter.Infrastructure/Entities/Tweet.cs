@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Twitter.Infrastructure.BusinessModels;
 using Twitter.Infrastructure.Entities.Common;
 
@@ -11,11 +12,11 @@ public class Tweet : AuditableEntity
 
     [Required]
     [MaxLength(500)]
-    public string Content { get; set; } = string.Empty;
+    public required string Content { get; set; }
 
     public ICollection<SubTweet>? SubTweets { get; set; }
 
-    public Audience Audience { get; set; } = Audience.None;
+    public Audience Audience { get; set; } = Audience.Public;
 
-    public List<Tag> Tags { get; set; } = new ();
+    public List<Tag>? Tags { get; set; }
 }
