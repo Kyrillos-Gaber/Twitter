@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Twitter.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTweetsAndSubtweetsAndTagsTables : Migration
+    public partial class AddTweetsAndTagsTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,7 @@ namespace Twitter.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastUpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -32,34 +32,19 @@ namespace Twitter.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    MainTweetId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Audience = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastUpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tweets", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SubTweets",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    MainTweetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubTweets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubTweets_Tweets_MainTweetId",
+                        name: "FK_Tweets_Tweets_MainTweetId",
                         column: x => x.MainTweetId,
                         principalTable: "Tweets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -87,22 +72,19 @@ namespace Twitter.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubTweets_MainTweetId",
-                table: "SubTweets",
-                column: "MainTweetId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TagTweet_TweetsId",
                 table: "TagTweet",
                 column: "TweetsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tweets_MainTweetId",
+                table: "Tweets",
+                column: "MainTweetId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "SubTweets");
-
             migrationBuilder.DropTable(
                 name: "TagTweet");
 

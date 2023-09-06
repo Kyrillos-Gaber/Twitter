@@ -41,8 +41,21 @@ public class TweetController : ControllerBase
             return BadRequest(ModelState);
 
         var res = await _tweetService.Create(createTweet);
-        
-        return CreatedAtRoute("GetTweet", new { id = res.Id }, res );
+
+        return CreatedAtRoute("GetTweet", new { id = res.Id }, res);
+    }
+
+    [HttpPost("{mainTweetId:Guid}")]
+    public async Task<IActionResult> CreateSubTweet(
+        [FromRoute] Guid mainTweetId, 
+        [FromBody] CreateTweetDto createTweet)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var res = await _tweetService.CreateSubTweet(mainTweetId, createTweet);
+
+        return CreatedAtRoute("GetTweet", new { id = mainTweetId }, res);
     }
 
     [HttpDelete("{id:Guid}")] 

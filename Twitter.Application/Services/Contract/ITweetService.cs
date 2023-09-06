@@ -15,7 +15,9 @@ public interface ITweetService
     /// <param name="tweetDto"></param>
     /// <returns>created tweet</returns>
     Task<ReadTweetDto> Create(CreateTweetDto tweetDto);
-    
+
+    Task<ReadTweetDto> CreateSubTweet(Guid mainTweetId, CreateTweetDto tweetDto);
+
     ReadTweetDto Update(ReadTweetDto tweetDto);
 
     void Delete(Guid id);

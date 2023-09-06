@@ -3,11 +3,11 @@ using Twitter.Infrastructure.Entities.Common;
 
 namespace Twitter.Infrastructure.Entities;
 
-public class SubTweet : AuditableEntity
+public class SubTweet //: AuditableEntity
 {
+    /*
     [Key]
     public Guid Id { get; set; }
-
     [Required]
     [MaxLength(500)]
     public required string Content { get; set; }
@@ -17,4 +17,11 @@ public class SubTweet : AuditableEntity
 
     [Required]
     public required Tweet MainTweet { get; set; }
+    */
+
+    //[Key]
+    public Guid TweetId { get; set; }
+
+    //[Key]
+    public Guid SubTweetId { get; set; }
 }

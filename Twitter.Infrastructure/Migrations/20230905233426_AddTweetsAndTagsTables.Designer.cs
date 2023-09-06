@@ -12,8 +12,8 @@ using Twitter.Infrastructure;
 namespace Twitter.Infrastructure.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20230831143210_AddTweetsAndSubtweetsAndTagsTables")]
-    partial class AddTweetsAndSubtweetsAndTagsTables
+    [Migration("20230905233426_AddTweetsAndTagsTables")]
+    partial class AddTweetsAndTagsTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,33 +40,6 @@ namespace Twitter.Infrastructure.Migrations
                     b.ToTable("TagTweet");
                 });
 
-            modelBuilder.Entity("Twitter.Infrastructure.Entities.SubTweet", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LastUpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("MainTweetId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MainTweetId");
-
-                    b.ToTable("SubTweets");
-                });
-
             modelBuilder.Entity("Twitter.Infrastructure.Entities.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -78,7 +51,7 @@ namespace Twitter.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("LastUpdateAt")
+                    b.Property<DateTime?>("LastUpdateAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -108,10 +81,15 @@ namespace Twitter.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("LastUpdateAt")
+                    b.Property<DateTime?>("LastUpdateAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("MainTweetId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("MainTweetId");
 
                     b.ToTable("Tweets");
                 });
@@ -131,12 +109,11 @@ namespace Twitter.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Twitter.Infrastructure.Entities.SubTweet", b =>
+            modelBuilder.Entity("Twitter.Infrastructure.Entities.Tweet", b =>
                 {
                     b.HasOne("Twitter.Infrastructure.Entities.Tweet", "MainTweet")
                         .WithMany("SubTweets")
-                        .HasForeignKey("MainTweetId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("MainTweetId");
 
                     b.Navigation("MainTweet");
                 });

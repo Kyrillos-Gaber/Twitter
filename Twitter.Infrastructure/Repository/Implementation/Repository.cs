@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using Twitter.Infrastructure.Repository.Contract;
 
 namespace Twitter.Infrastructure.Repository.Implementation;
@@ -15,6 +16,12 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task AddAsync(T entity)
     {
         await _dbContext.Set<T>().AddAsync(entity);
+    }
+
+    public async Task<T> AddAsyncAndRturnEntity(T entity)
+    {
+        await _dbContext.Set<T>().AddAsync(entity);
+        return entity;
     }
 
     public void Delete(T entity)
@@ -34,9 +41,20 @@ public class Repository<T> : IRepository<T> where T : class
         Delete(e);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync(
+        Expression<Func<T, bool>>? expression = null,
+        List<string>? includes = null)
     {
-        var res = await _dbContext.Set<T>().Skip(0).Take(10).ToListAsync();
+        IQueryable<T> query = _dbContext.Set<T>();
+        
+        if (expression is not null)
+            query = query.Where(expression);
+
+        if (includes is not null)
+            foreach (string include in includes)
+                query.Include(include);
+
+        var res = await query.Skip(0).Take(10).ToListAsync();
         return res;
     }
 

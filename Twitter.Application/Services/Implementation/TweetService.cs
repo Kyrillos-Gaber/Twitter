@@ -21,9 +21,21 @@ public class TweetService : ITweetService
     {
         // Destination => Source
         var tweet = _mapper.Map<Tweet>(tweetDto);
+        tweet.IsMainTweet = true;
         await _unitOfWork.TweetRepository.AddAsync(tweet);
         await _unitOfWork.SaveAsync();
         
+        return _mapper.Map<ReadTweetDto>(tweet);
+    }
+
+    public async Task<ReadTweetDto> CreateSubTweet(Guid mainTweetId, CreateTweetDto tweetDto)
+    {
+        Tweet entity = _mapper.Map<Tweet>(tweetDto);
+        entity.IsMainTweet = false;
+        await _unitOfWork.TweetRepository.AddSubTweetAsync(mainTweetId, entity);
+        await _unitOfWork.SaveAsync();
+
+        Tweet tweet = await _unitOfWork.TweetRepository.GetAsync(mainTweetId);
         return _mapper.Map<ReadTweetDto>(tweet);
     }
 
@@ -42,6 +54,7 @@ public class TweetService : ITweetService
 
     public async Task<IEnumerable<ReadTweetDto>> GetAll()
     {
+        List<string> includeSubTweet = new() { "SubTweets" };
         var tweets = await _unitOfWork.TweetRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<ReadTweetDto>>(tweets);
     }

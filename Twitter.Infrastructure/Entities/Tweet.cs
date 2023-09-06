@@ -14,7 +14,15 @@ public class Tweet : AuditableEntity
     [MaxLength(500)]
     public required string Content { get; set; }
 
-    public ICollection<SubTweet>? SubTweets { get; set; }
+    //public ICollection<SubTweet>? SubTweets { get; set; }
+
+    public Guid? MainTweetId { get; set; }
+
+    public Tweet? MainTweet { get; set; }
+
+    public bool IsMainTweet { get; set; } = false;
+
+    public ICollection<Tweet> SubTweets { get; set; } = new List<Tweet>();
 
     public Audience Audience { get; set; } = Audience.Public;
 

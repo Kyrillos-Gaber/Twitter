@@ -19,6 +19,7 @@ public class MappingProfiles : Profile
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
             .ForMember(dest => dest.LastUpdateAt, opt => opt.MapFrom(src => src.LastUpdateAt))
             .ForMember(dest => dest.Audience, opt => opt.MapFrom(src => src.Audience))
+            .ForMember(dest => dest.SubTweets, opt => opt.MapFrom(src => src.SubTweets))
             .ReverseMap();
 
     }

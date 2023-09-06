@@ -13,7 +13,7 @@ public class ReadTweetDto : AuditableEntity
     [MaxLength(500)]
     public required string Content { get; set; }
 
-    //public ICollection<SubTweet>? SubTweets { get; set; }
+    public ICollection<ReadTweetDto>? SubTweets { get; set; } 
 
     public Audience Audience { get; set; } = Audience.Public;
 
