@@ -54,7 +54,6 @@ public class TweetService : ITweetService
 
     public async Task<IEnumerable<ReadTweetDto>> GetAll()
     {
-        List<string> includeSubTweet = new() { "SubTweets" };
         var tweets = await _unitOfWork.TweetRepository.GetAllAsync();
         return _mapper.Map<IEnumerable<ReadTweetDto>>(tweets);
     }

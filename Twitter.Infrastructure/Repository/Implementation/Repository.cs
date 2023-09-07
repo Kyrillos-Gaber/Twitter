@@ -54,6 +54,8 @@ public class Repository<T> : IRepository<T> where T : class
             foreach (string include in includes)
                 query.Include(include);
 
+        query.Distinct();
+
         var res = await query.Skip(0).Take(10).ToListAsync();
         return res;
     }
