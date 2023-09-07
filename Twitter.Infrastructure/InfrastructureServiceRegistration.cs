@@ -14,7 +14,6 @@ public static class InfrastructureServiceRegistration
             options.UseSqlServer(configuration.GetConnectionString("DBConnection")));
 
         services.AddScoped<ITweetRepository, TweetRepository>();
-        services.AddScoped<ISubTweetRepository, SubTweetRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

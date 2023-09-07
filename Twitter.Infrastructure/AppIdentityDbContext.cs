@@ -9,8 +9,6 @@ public class AppIdentityDbContext : DbContext
 
     public DbSet<Tweet> Tweets { get; set; }
 
-    //public DbSet<SubTweet> SubTweet { get; set; }
-
     public DbSet<Tag> Tags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
