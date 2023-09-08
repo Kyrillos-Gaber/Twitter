@@ -22,6 +22,12 @@ public class TweetService : ITweetService
         // Destination => Source
         var tweet = _mapper.Map<Tweet>(tweetDto);
         tweet.IsMainTweet = true;
+
+        var tags = _mapper.Map<List< Tag >> (tweetDto.Tags);
+        tweet.Tags = tags;
+        await _unitOfWork.TagRepository.AddRangeAsynce(tags);
+        await _unitOfWork.SaveAsync();
+
         await _unitOfWork.TweetRepository.AddAsync(tweet);
         await _unitOfWork.SaveAsync();
         

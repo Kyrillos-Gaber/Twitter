@@ -40,5 +40,10 @@ public class AppIdentityDbContext : DbContext
             .WithMany(e => e.SubTweets)
             .HasForeignKey(e => e.MainTweetId)
             .IsRequired(false);
+/*
+        modelBuilder.Entity<Tag>()
+            .HasIndex(e => e.Name)
+            .IsUnique(true);
+*/
     }
 }

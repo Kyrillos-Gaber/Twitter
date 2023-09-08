@@ -12,8 +12,8 @@ using Twitter.Infrastructure;
 namespace Twitter.Infrastructure.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20230905233426_AddTweetsAndTagsTables")]
-    partial class AddTweetsAndTagsTables
+    [Migration("20230908005501_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,6 +80,9 @@ namespace Twitter.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsMainTweet")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdateAt")
                         .HasColumnType("datetime2");

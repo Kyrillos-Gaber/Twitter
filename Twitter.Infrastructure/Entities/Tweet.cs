@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Twitter.Infrastructure.BusinessModels;
 using Twitter.Infrastructure.Entities.Common;
 
@@ -13,8 +12,6 @@ public class Tweet : AuditableEntity
     [Required]
     [MaxLength(500)]
     public required string Content { get; set; }
-
-    //public ICollection<SubTweet>? SubTweets { get; set; }
 
     public Guid? MainTweetId { get; set; }
 

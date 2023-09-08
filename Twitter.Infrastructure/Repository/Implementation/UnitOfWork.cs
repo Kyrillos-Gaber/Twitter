@@ -8,16 +8,13 @@ public class UnitOfWork : IUnitOfWork
 
     public ITweetRepository TweetRepository { get; }
 
-    public ISubTweetRepository SubTweetRepository { get; }
-
     public ITagRepository TagRepository { get; }
 
     public UnitOfWork(AppIdentityDbContext dbContext, ITweetRepository tweetRepository, 
-        ISubTweetRepository subTweetRepository, ITagRepository tagRepository)
+        ITagRepository tagRepository)
     {
         _dbContext = dbContext;
         TweetRepository = tweetRepository;
-        SubTweetRepository = subTweetRepository;
         TagRepository = tagRepository;
     }
 

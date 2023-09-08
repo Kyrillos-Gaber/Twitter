@@ -35,7 +35,9 @@ public class TweetRepository : Repository<Tweet>, ITweetRepository
 
         var tweets = tweetTable
             .Where(t => t.IsMainTweet == true)
-            .Skip(0).Take(10).ToList();
+            .Skip(0).Take(10)
+            .Include("Tags")
+            .ToList();
 
         foreach (var tweet in tweets)
             tweet.SubTweets = tweetTable

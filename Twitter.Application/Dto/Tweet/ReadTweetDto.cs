@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Twitter.Application.Dto.Common;
+using Twitter.Application.Dto.Tags;
 using Twitter.Infrastructure.BusinessModels;
-using Twitter.Infrastructure.Entities;
 
 namespace Twitter.Application.Dto.Tweet;
 
@@ -17,5 +17,5 @@ public class ReadTweetDto : AuditableEntity
 
     public Audience Audience { get; set; } = Audience.Public;
 
-    //public List<Tag>? Tags { get; set; }
+    public List<TagDto>? Tags { get; set; }
 }

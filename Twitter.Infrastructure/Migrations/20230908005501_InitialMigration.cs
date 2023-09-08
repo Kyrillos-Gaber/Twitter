@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Twitter.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTweetsAndTagsTables : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +33,7 @@ namespace Twitter.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     MainTweetId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsMainTweet = table.Column<bool>(type: "bit", nullable: false),
                     Audience = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true)

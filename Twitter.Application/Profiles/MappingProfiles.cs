@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Twitter.Application.Dto.Tags;
 using Twitter.Application.Dto.Tweet;
 using Twitter.Infrastructure.Entities;
 
@@ -22,5 +23,8 @@ public class MappingProfiles : Profile
             .ForMember(dest => dest.SubTweets, opt => opt.MapFrom(src => src.SubTweets))
             .ReverseMap();
 
+        CreateMap<Tag, TagDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+            .ReverseMap();
     }
 }
