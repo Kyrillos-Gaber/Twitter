@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Twitter.Infrastructure.Entities;
 
 namespace Twitter.Infrastructure;
 
-public class AppIdentityDbContext : DbContext
+public class AppIdentityDbContext : IdentityDbContext<ApiUser>
 {
     public AppIdentityDbContext(DbContextOptions options) : base(options) { }
 
@@ -13,14 +14,12 @@ public class AppIdentityDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        /*
-        modelBuilder.Entity<Tweet>()
-            .HasMany(t => t.SubTweets)
-            .WithOne(e => e.MainTweet)
-            .HasForeignKey(e => e.MainTweetId)
-            .IsRequired(false)
-            .OnDelete(DeleteBehavior.Cascade);
-        */
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<ApiUser>()
+            .HasMany(t => t.Tweets)
+            .WithOne()
+            .IsRequired(false);
 
         modelBuilder.Entity<Tweet>()
             .HasMany(t => t.Tags)
@@ -40,10 +39,11 @@ public class AppIdentityDbContext : DbContext
             .WithMany(e => e.SubTweets)
             .HasForeignKey(e => e.MainTweetId)
             .IsRequired(false);
-/*
-        modelBuilder.Entity<Tag>()
-            .HasIndex(e => e.Name)
-            .IsUnique(true);
-*/
+
+        /*
+                modelBuilder.Entity<Tag>()
+                    .HasIndex(e => e.Name)
+                    .IsUnique(true);
+        */
     }
 }

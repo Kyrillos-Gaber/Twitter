@@ -72,6 +72,13 @@ public class Repository<T> : IRepository<T> where T : class
         return res!;
     }
 
+    public async Task<T> GetAsync(Expression<Func<T, bool>> expression)
+    {
+        var res = await _dbContext.Set<T>().FirstOrDefaultAsync(expression);
+        
+        return res!;
+    }
+
     public T GetById(int id)
     {
         var res = _dbContext.Set<T>().Find(id);

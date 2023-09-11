@@ -23,5 +23,8 @@ public class Tweet : AuditableEntity
 
     public Audience Audience { get; set; } = Audience.Public;
 
-    public List<Tag>? Tags { get; set; }
+    public virtual List<Tag>? Tags { get; set; }
+
+    [Required]
+    public required ApiUser Author { get; set; }
 }

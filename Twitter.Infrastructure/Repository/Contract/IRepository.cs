@@ -24,6 +24,8 @@ public interface IRepository<T> where T : class
     
     Task<T> GetAsync(Guid id);
 
+    public Task<T> GetAsync(Expression< Func<T, bool> > expression);
+
     T GetById(int id);
     
     T GetById(Guid id);
