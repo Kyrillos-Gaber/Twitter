@@ -4,5 +4,5 @@ namespace Twitter.Infrastructure.Repository.Contract;
 
 public interface ITweetRepository : IRepository<Tweet>
 {
-    Task AddSubTweetAsync(Guid mainTweetId, Tweet subTweet);
+    Task AddSubTweetAsync(int mainTweetId, Tweet subTweet);
 }

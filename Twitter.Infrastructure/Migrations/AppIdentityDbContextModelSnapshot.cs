@@ -155,21 +155,6 @@ namespace Twitter.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("TagTweet", b =>
-                {
-                    b.Property<int>("TagsId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("TweetsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("TagsId", "TweetsId");
-
-                    b.HasIndex("TweetsId");
-
-                    b.ToTable("TagTweet");
-                });
-
             modelBuilder.Entity("Twitter.Infrastructure.Entities.ApiUser", b =>
                 {
                     b.Property<string>("Id")
@@ -258,6 +243,9 @@ namespace Twitter.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -276,18 +264,16 @@ namespace Twitter.Infrastructure.Migrations
 
             modelBuilder.Entity("Twitter.Infrastructure.Entities.Tweet", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<string>("ApiUserId")
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Audience")
                         .HasColumnType("int");
 
                     b.Property<string>("AuthorId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
@@ -304,18 +290,31 @@ namespace Twitter.Infrastructure.Migrations
                     b.Property<DateTime?>("LastUpdateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("MainTweetId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("MainTweetId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApiUserId");
 
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("MainTweetId");
 
                     b.ToTable("Tweets");
+                });
+
+            modelBuilder.Entity("Twitter.Infrastructure.Entities.TweetTag", b =>
+                {
+                    b.Property<int>("TweetId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TweetId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("TweetTag");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -369,32 +368,11 @@ namespace Twitter.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TagTweet", b =>
-                {
-                    b.HasOne("Twitter.Infrastructure.Entities.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Twitter.Infrastructure.Entities.Tweet", null)
-                        .WithMany()
-                        .HasForeignKey("TweetsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Twitter.Infrastructure.Entities.Tweet", b =>
                 {
-                    b.HasOne("Twitter.Infrastructure.Entities.ApiUser", null)
-                        .WithMany("Tweets")
-                        .HasForeignKey("ApiUserId");
-
                     b.HasOne("Twitter.Infrastructure.Entities.ApiUser", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Tweets")
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("Twitter.Infrastructure.Entities.Tweet", "MainTweet")
                         .WithMany("SubTweets")
@@ -405,14 +383,40 @@ namespace Twitter.Infrastructure.Migrations
                     b.Navigation("MainTweet");
                 });
 
+            modelBuilder.Entity("Twitter.Infrastructure.Entities.TweetTag", b =>
+                {
+                    b.HasOne("Twitter.Infrastructure.Entities.Tag", "Tag")
+                        .WithMany("TweetTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Twitter.Infrastructure.Entities.Tweet", "Tweet")
+                        .WithMany("TweetTags")
+                        .HasForeignKey("TweetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tag");
+
+                    b.Navigation("Tweet");
+                });
+
             modelBuilder.Entity("Twitter.Infrastructure.Entities.ApiUser", b =>
                 {
                     b.Navigation("Tweets");
                 });
 
+            modelBuilder.Entity("Twitter.Infrastructure.Entities.Tag", b =>
+                {
+                    b.Navigation("TweetTags");
+                });
+
             modelBuilder.Entity("Twitter.Infrastructure.Entities.Tweet", b =>
                 {
                     b.Navigation("SubTweets");
+
+                    b.Navigation("TweetTags");
                 });
 #pragma warning restore 612, 618
         }

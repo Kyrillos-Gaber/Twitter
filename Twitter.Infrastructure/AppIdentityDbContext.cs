@@ -17,22 +17,10 @@ public class AppIdentityDbContext : IdentityDbContext<ApiUser>
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<ApiUser>()
-            .HasMany(t => t.Tweets)
-            .WithOne()
+            .HasMany(a => a.Tweets)
+            .WithOne(t => t.Author)
+            .HasForeignKey(t => t.AuthorId)
             .IsRequired(false);
-
-        modelBuilder.Entity<Tweet>()
-            .HasMany(t => t.Tags)
-            .WithMany(t => t.Tweets);
-
-        /*
-        modelBuilder.Entity<Tweet>()
-            .HasMany(t => t.SubTweets)
-            .WithMany()
-            .UsingEntity<SubTweet>(
-                e => e.HasOne<Tweet>().WithMany().HasForeignKey(e => e.TweetId),
-                e => e.HasOne<Tweet>().WithMany().HasForeignKey(e => e.SubTweetId));
-        */
 
         modelBuilder.Entity<Tweet>()
             .HasOne(e => e.MainTweet)
@@ -40,10 +28,19 @@ public class AppIdentityDbContext : IdentityDbContext<ApiUser>
             .HasForeignKey(e => e.MainTweetId)
             .IsRequired(false);
 
-        /*
-                modelBuilder.Entity<Tag>()
-                    .HasIndex(e => e.Name)
-                    .IsUnique(true);
-        */
+        modelBuilder.Entity<Tweet>()
+            .HasMany(t => t.Tags)
+            .WithMany(t => t.Tweets)
+            .UsingEntity<TweetTag>(
+                j => j
+                    .HasOne(t => t.Tag)
+                    .WithMany(t => t.TweetTags)
+                    .HasForeignKey(t => t.TagId),
+                j => j
+                    .HasOne(t => t.Tweet)
+                    .WithMany(t => t.TweetTags)
+                    .HasForeignKey(t => t.TweetId),
+                j => j.HasKey(t => new { t.TweetId, t.TagId }));
+
     }
 }

@@ -29,12 +29,6 @@ public class Repository<T> : IRepository<T> where T : class
         _dbContext.Set<T>().Remove(entity);
     }
 
-    public void Delete(Guid id)
-    {
-        var e = GetById(id);
-        Delete(e);
-    }
-
     public void Delete(int id)
     {
         var e = GetById(id);
@@ -66,15 +60,15 @@ public class Repository<T> : IRepository<T> where T : class
         return res!;
     }
 
-    public async Task<T> GetAsync(Guid id)
-    {
-        var res = await _dbContext.Set<T>().FindAsync(id);
-        return res!;
-    }
+    //public async Task<T> GetAsync(Guid id)
+    //{
+    //    var res = await _dbContext.Set<T>().FindAsync(id);
+    //    return res!;
+    //}
 
     public async Task<T> GetAsync(Expression<Func<T, bool>> expression)
     {
-        var res = await _dbContext.Set<T>().FirstOrDefaultAsync(expression);
+        var res = await _dbContext.Set<T>().Where(expression).FirstOrDefaultAsync();
         
         return res!;
     }
@@ -85,11 +79,11 @@ public class Repository<T> : IRepository<T> where T : class
         return res!;
     }
 
-    public T GetById(Guid id)
-    {
-        var res = _dbContext.Set<T>().Find(id);
-        return res!;
-    }
+    //public T GetById(Guid id)
+    //{
+    //    var res = _dbContext.Set<T>().Find(id);
+    //    return res!;
+    //}
 
     public void Update(T entity)
     {

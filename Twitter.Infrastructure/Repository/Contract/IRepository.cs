@@ -10,8 +10,6 @@ public interface IRepository<T> where T : class
 
     void Delete(T entity);
 
-    void Delete(Guid id);
-
     void Delete(int id);
 
     void Update(T entity);
@@ -22,11 +20,11 @@ public interface IRepository<T> where T : class
 
     Task<T> GetAsync(int id);
     
-    Task<T> GetAsync(Guid id);
 
     public Task<T> GetAsync(Expression< Func<T, bool> > expression);
 
     T GetById(int id);
+
     
-    T GetById(Guid id);
+    
 }

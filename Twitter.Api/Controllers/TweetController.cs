@@ -26,8 +26,8 @@ public class TweetController : ControllerBase
         return Ok(res);
     }
 
-    [HttpGet("{id:Guid}", Name = "GetTweet")]
-    public async Task<IActionResult> GetById(Guid id)
+    [HttpGet("{id:int}", Name = "GetTweet")]
+    public async Task<IActionResult> GetById(int id)
     {
         var res = await _tweetService.Get(id);
 
@@ -45,9 +45,9 @@ public class TweetController : ControllerBase
         return CreatedAtRoute("GetTweet", new { id = res.Id }, res);
     }
 
-    [HttpPost("{mainTweetId:Guid}")]
+    [HttpPost("{mainTweetId:int}")]
     public async Task<IActionResult> CreateSubTweet(
-        [FromRoute] Guid mainTweetId, 
+        [FromRoute] int mainTweetId, 
         [FromBody] CreateTweetDto createTweet)
     {
         if (!ModelState.IsValid)
@@ -58,8 +58,8 @@ public class TweetController : ControllerBase
         return CreatedAtRoute("GetTweet", new { id = mainTweetId }, res);
     }
 
-    [HttpDelete("{id:Guid}")] 
-    public IActionResult Delete(Guid id)
+    [HttpDelete("{id:int}")] 
+    public IActionResult Delete(int id)
     {
         _tweetService.Delete(id);
 

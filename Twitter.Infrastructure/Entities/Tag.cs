@@ -12,5 +12,9 @@ public class Tag : AuditableEntity
     [MaxLength(100), MinLength(1)]
     public required string Name { get; set; }
     
-    public List<Tweet> Tweets { get; set; } = new ();
+    public List<Tweet>? Tweets { get; set; }
+
+    public List<TweetTag>? TweetTags { get; set; }
+
+    public int Count { get; set; } = 0;
 }

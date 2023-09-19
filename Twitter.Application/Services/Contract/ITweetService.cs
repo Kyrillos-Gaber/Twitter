@@ -5,7 +5,7 @@ namespace Twitter.Application.Services.Contract;
 
 public interface ITweetService
 {
-    Task<ReadTweetDto> Get(Guid id);
+    Task<ReadTweetDto> Get(int id);
 
     Task<IEnumerable<ReadTweetDto>> GetAll();
 
@@ -16,11 +16,11 @@ public interface ITweetService
     /// <returns>created tweet</returns>
     Task<ReadTweetDto> Create(CreateTweetDto tweetDto);
 
-    Task<ReadTweetDto> CreateSubTweet(Guid mainTweetId, CreateTweetDto tweetDto);
+    Task<ReadTweetDto> CreateSubTweet(int mainTweetId, CreateTweetDto tweetDto);
 
     ReadTweetDto Update(ReadTweetDto tweetDto);
 
-    void Delete(Guid id);
+    void Delete(int id);
 
 
 }

@@ -12,7 +12,8 @@ public class MappingProfiles : Profile
         // Source => Destination
         CreateMap<CreateTweetDto, Tweet>()
             .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.Content))
-            .ForMember(dest => dest.Audience, opt => opt.MapFrom(src => src.Audience));
+            .ForMember(dest => dest.Audience, opt => opt.MapFrom(src => src.Audience))
+            .ForMember(dest => dest.Tags, opt => opt.Ignore());
 
         CreateMap<Tweet, ReadTweetDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

@@ -12,5 +12,5 @@ public class CreateTweetDto
 
     public Audience Audience { get; set; } = Audience.Public;
 
-    public List<TagDto>? Tags{ get; set; }
+    public List<string>? Tags{ get; set; }
 }

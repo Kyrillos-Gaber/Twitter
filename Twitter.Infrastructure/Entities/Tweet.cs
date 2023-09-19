@@ -7,13 +7,13 @@ namespace Twitter.Infrastructure.Entities;
 public class Tweet : AuditableEntity
 {
     [Key]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     [Required]
     [MaxLength(500)]
     public required string Content { get; set; }
 
-    public Guid? MainTweetId { get; set; }
+    public int? MainTweetId { get; set; }
 
     public Tweet? MainTweet { get; set; }
 
@@ -23,8 +23,12 @@ public class Tweet : AuditableEntity
 
     public Audience Audience { get; set; } = Audience.Public;
 
-    public virtual List<Tag>? Tags { get; set; }
+    public virtual List<Tag>? Tags { get; set; } 
+
+    public List<TweetTag>? TweetTags { get; set; }
+
+    public /*required*/ string AuthorId { get; set; }
 
     [Required]
-    public required ApiUser Author { get; set; }
+    public /*required*/ ApiUser Author { get; set; }
 }

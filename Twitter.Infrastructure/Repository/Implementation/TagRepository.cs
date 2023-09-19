@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Twitter.Infrastructure.Entities;
 using Twitter.Infrastructure.Repository.Contract;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Twitter.Infrastructure.Repository.Implementation;
 
@@ -32,5 +33,24 @@ public class TagRepository : Repository<Tag>, ITagRepository
             dbset.Add(tag);
                 
         return tag;
+    }
+
+    public async Task<List<Tag>> AddRangeAsynce(List<string> tags)
+    {
+        List<Tag> tagsList = new ();
+
+        foreach (string tag in tags)
+        {
+            Tag t = await GetAsync(x => x.Name == tag);
+            if (t is null)
+            {
+                t = new Tag { Name = tag };
+                await AddAsync(t);
+            }
+            t.Count++;
+            tagsList.Add(t);
+        }
+
+        return tagsList;
     }
 }

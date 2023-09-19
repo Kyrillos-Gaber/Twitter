@@ -4,6 +4,7 @@ using System.Linq;
 using Twitter.Infrastructure.Entities;
 using Twitter.Infrastructure.Repository.Contract;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Twitter.Infrastructure.Repository.Implementation;
 
@@ -16,7 +17,7 @@ public class TweetRepository : Repository<Tweet>, ITweetRepository
         _dbContext = dbContext;
     }
 
-    public async Task AddSubTweetAsync(Guid mainTweetId, Tweet subTweet)
+    public async Task AddSubTweetAsync(int mainTweetId, Tweet subTweet)
     {
         Tweet mainTweet = await GetAsync(mainTweetId);
 
@@ -46,6 +47,20 @@ public class TweetRepository : Repository<Tweet>, ITweetRepository
 
         return tweets;
     }
-
-    
+    /*
+    public new async Task AddAsync(Tweet tweet)
+    {
+        //foreach (var tag in tweet.Tags!)
+        //{
+        //    Tag? t = await _dbContext.Tags.Where(x => x.Name == tag.Name).AsNoTracking().FirstAsync();
+        //    if (t is not null)
+        //    {
+        //        tag.Id = t.Id;
+        //    }
+            
+        //}
+        //_dbContext.AttachRange(tweet.Tags!);
+        await _dbContext.Tweets.AddAsync(tweet);
+    }
+    */
 }

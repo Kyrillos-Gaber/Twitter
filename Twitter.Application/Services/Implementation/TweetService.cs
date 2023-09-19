@@ -24,14 +24,16 @@ public class TweetService : ITweetService
         tweet.IsMainTweet = true;
 
         // TODO Bug in saving tag it create new tags every time but it should crate the new only
-        
+
+        tweet.Tags = await _unitOfWork.TagRepository.AddRangeAsynce(tweetDto.Tags!);
+
         await _unitOfWork.TweetRepository.AddAsync(tweet);
         await _unitOfWork.SaveAsync();
         
         return _mapper.Map<ReadTweetDto>(tweet);
     }
 
-    public async Task<ReadTweetDto> CreateSubTweet(Guid mainTweetId, CreateTweetDto tweetDto)
+    public async Task<ReadTweetDto> CreateSubTweet(int mainTweetId, CreateTweetDto tweetDto)
     {
         Tweet entity = _mapper.Map<Tweet>(tweetDto);
         entity.IsMainTweet = false;
@@ -42,14 +44,14 @@ public class TweetService : ITweetService
         return _mapper.Map<ReadTweetDto>(tweet);
     }
 
-    public void Delete(Guid id)
+    public void Delete(int id)
     {
         _unitOfWork.TweetRepository.Delete(id);
         if (!_unitOfWork.Save())
             throw new Exception("can not delete!");
     }
 
-    public async Task<ReadTweetDto> Get(Guid id)
+    public async Task<ReadTweetDto> Get(int id)
     {
         var tweet = await _unitOfWork.TweetRepository.GetAsync(id);
         return _mapper.Map<ReadTweetDto>(tweet);

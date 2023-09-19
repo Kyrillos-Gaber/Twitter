@@ -7,7 +7,7 @@ namespace Twitter.Application.Dto.Tweet;
 
 public class ReadTweetDto : AuditableEntity
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     [Required]
     [MaxLength(500)]
