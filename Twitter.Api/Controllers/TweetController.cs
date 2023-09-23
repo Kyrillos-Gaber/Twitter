@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Twitter.Application.Dto.Tweet;
 using Twitter.Application.Services.Contract;
@@ -7,6 +8,7 @@ using Twitter.Infrastructure.Repository.Contract;
 
 namespace Twitter.Api.Controllers;
 
+[Authorize]
 [Route("api/v1/[controller]")]
 [ApiController]
 public class TweetController : ControllerBase

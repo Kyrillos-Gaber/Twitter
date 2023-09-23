@@ -23,8 +23,6 @@ public class TweetService : ITweetService
         var tweet = _mapper.Map<Tweet>(tweetDto);
         tweet.IsMainTweet = true;
 
-        // TODO Bug in saving tag it create new tags every time but it should crate the new only
-
         tweet.Tags = await _unitOfWork.TagRepository.AddRangeAsynce(tweetDto.Tags!);
 
         await _unitOfWork.TweetRepository.AddAsync(tweet);
