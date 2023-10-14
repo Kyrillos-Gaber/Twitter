@@ -13,7 +13,7 @@ public class TweetConfiguration : IEntityTypeConfiguration<Tweet>
             .HasOne(e => e.MainTweet)
             .WithMany(e => e.SubTweets)
             .HasForeignKey(e => e.MainTweetId)
-        .IsRequired(false);
+            .IsRequired(false);
 
         builder
             .HasMany(t => t.Tags)

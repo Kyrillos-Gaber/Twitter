@@ -17,15 +17,13 @@ public class UserManagement : IUserManagement
 {
     private readonly UserManager<ApiUser> _userManager;
     private readonly IConfiguration _configuration;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private ApiUser? _user;
 
-    public UserManagement(UserManager<ApiUser> userManager, IConfiguration configuration, IUnitOfWork unitOfWork, IMapper mapper)
+    public UserManagement(UserManager<ApiUser> userManager, IConfiguration configuration, IMapper mapper)
     {
         _userManager = userManager;
         _configuration = configuration;
-        _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
@@ -45,17 +43,20 @@ public class UserManagement : IUserManagement
 
     public async Task Register(CreateUserDto createUserDto)
     {
+        createUserDto.Roles!.Clear();
+        createUserDto.Roles!.Add("User");
+        
         ApiUser user = _mapper.Map<ApiUser>(createUserDto);
-        IdentityResult result = await _userManager.CreateAsync(user, createUserDto.Password);
 
+        IdentityResult result = await _userManager.CreateAsync(user, createUserDto.Password);
+        
+        StringBuilder errors  = new();
         if (!result.Succeeded)
         {
-            StringBuilder errors  = new();
             foreach (var err in result.Errors)
                 errors.Append(err.Description);
             throw new Exception(errors.ToString());
         }
-
     }
 
     public async Task<string> CreateToken()
@@ -71,12 +72,13 @@ public class UserManagement : IUserManagement
     {
         IConfigurationSection jwtSetting = _configuration.GetSection("Jwt");
         DateTime expiration = 
-            DateTime.Now.AddMinutes(Convert.ToDouble(jwtSetting.GetSection("Lifetime").Value));
+            DateTime.Now.AddDays(Convert.ToDouble(jwtSetting.GetSection("Lifetime").Value));
 
         var token = new JwtSecurityToken(
             issuer: jwtSetting.GetSection("Issuer").Value,
             claims: claims,
             expires: expiration,
+            audience: jwtSetting.GetSection("Audience").Value,
             signingCredentials: credentials );
         return token;
     }

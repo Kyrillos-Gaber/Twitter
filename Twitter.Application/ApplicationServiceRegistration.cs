@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +31,8 @@ public static class ApplicationServiceRegistration
 
         services.AddScoped<IUserManagement, UserManagement>();
 
+        services.AddSignalR();
+
         return services;
     }
 
@@ -48,11 +52,18 @@ public static class ApplicationServiceRegistration
                 ValidateIssuer = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
+                ValidateAudience = true,
                 ValidIssuer = jwtSettings.GetSection("Issuer").Value,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!)),
+                ValidAudience = jwtSettings.GetSection("Audience").Value
             };
         });
 
         return services;
+    }
+
+    public static WebApplication ConfigureServicesPipeline(this WebApplication app)
+    {
+        return app;
     }
 }

@@ -10,12 +10,17 @@ public class UnitOfWork : IUnitOfWork
 
     public ITagRepository TagRepository { get; }
 
-    public UnitOfWork(AppIdentityDbContext dbContext, ITweetRepository tweetRepository, 
-        ITagRepository tagRepository)
+    public IUserRepository UserRepository { get; }
+
+    public UnitOfWork(AppIdentityDbContext dbContext, 
+        ITweetRepository tweetRepository, 
+        ITagRepository tagRepository,
+        IUserRepository userRepository)
     {
         _dbContext = dbContext;
         TweetRepository = tweetRepository;
         TagRepository = tagRepository;
+        UserRepository = userRepository;
     }
 
     public void Dispose()

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Security.Claims;
 using Twitter.Application.Dto.Tweet;
 using Twitter.Application.Services.Contract;
 using Twitter.Infrastructure.Entities;
@@ -17,12 +18,13 @@ public class TweetService : ITweetService
         _mapper = mapper;
     }
 
-    public async Task<ReadTweetDto> Create(CreateTweetDto tweetDto)
+    public async Task<ReadTweetDto> Create(CreateTweetDto tweetDto, ClaimsPrincipal user)
     {
         // Destination => Source
         var tweet = _mapper.Map<Tweet>(tweetDto);
         tweet.IsMainTweet = true;
-
+        tweet.Author = await _unitOfWork.UserRepository.GetUserByUserClaimsPrincipal(user);
+        tweet.AuthorId = tweet.Author.Id;
         tweet.Tags = await _unitOfWork.TagRepository.AddRangeAsynce(tweetDto.Tags!);
 
         await _unitOfWork.TweetRepository.AddAsync(tweet);
@@ -31,9 +33,11 @@ public class TweetService : ITweetService
         return _mapper.Map<ReadTweetDto>(tweet);
     }
 
-    public async Task<ReadTweetDto> CreateSubTweet(int mainTweetId, CreateTweetDto tweetDto)
+    public async Task<ReadTweetDto> CreateSubTweet(int mainTweetId, CreateTweetDto tweetDto, ClaimsPrincipal user)
     {
         Tweet entity = _mapper.Map<Tweet>(tweetDto);
+        entity.Author = await _unitOfWork.UserRepository.GetUserByUserClaimsPrincipal(user);
+        entity.AuthorId = entity.Author.Id;
         entity.IsMainTweet = false;
         await _unitOfWork.TweetRepository.AddSubTweetAsync(mainTweetId, entity);
         await _unitOfWork.SaveAsync();

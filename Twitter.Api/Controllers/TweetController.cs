@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Twitter.Application.Dto.Tweet;
 using Twitter.Application.Services.Contract;
-using Twitter.Infrastructure.Entities;
-using Twitter.Infrastructure.Repository.Contract;
 
 namespace Twitter.Api.Controllers;
 
@@ -13,12 +12,15 @@ namespace Twitter.Api.Controllers;
 [ApiController]
 public class TweetController : ControllerBase
 {
-    private readonly ITweetService _tweetService;
+    private readonly ITweetService _tweetService;    
 
-    public TweetController(ITweetService tweetService)
+    public TweetController(ITweetService tweetService, IHttpContextAccessor httpContextAccessor)
     {
         _tweetService = tweetService;
     }
+
+    //private string GetUserIdd()
+    
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
@@ -42,25 +44,25 @@ public class TweetController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var res = await _tweetService.Create(createTweet);
+        var res = await _tweetService.Create(createTweet, User);
 
         return CreatedAtRoute("GetTweet", new { id = res.Id }, res);
     }
 
     [HttpPost("{mainTweetId:int}")]
     public async Task<IActionResult> CreateSubTweet(
-        [FromRoute] int mainTweetId, 
+        [FromRoute] int mainTweetId,
         [FromBody] CreateTweetDto createTweet)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var res = await _tweetService.CreateSubTweet(mainTweetId, createTweet);
+        var res = await _tweetService.CreateSubTweet(mainTweetId, createTweet, User);
 
         return CreatedAtRoute("GetTweet", new { id = mainTweetId }, res);
     }
 
-    [HttpDelete("{id:int}")] 
+    [HttpDelete("{id:int}")]
     public IActionResult Delete(int id)
     {
         _tweetService.Delete(id);

@@ -24,4 +24,7 @@ public class CreateUserDto
 
     [Required, MinLength(1), MaxLength(100)]
     public required string Country { get; set; }
+
+    public ICollection<string>? Roles { get; set; }
+
 }

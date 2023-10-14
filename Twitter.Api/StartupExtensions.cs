@@ -1,5 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 using Twitter.Application;
+using Twitter.Application.Services.Implementation;
 using Twitter.Infrastructure;
 
 namespace Twitter.Api;
@@ -27,9 +28,11 @@ public static class StartupExtensions
             opt.AddPolicy("AllowAll", builder =>
                 builder.AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader());
+                .AllowAnyHeader()
+                .SetIsOriginAllowed((hosts) => true));
         });
-
+        builder.Services.AddHttpContextAccessor();
+        // Configure swagger to accept tokens
         if (builder.Environment.IsDevelopment())
         {
             builder.Services.AddSwaggerGen(opt =>
@@ -72,10 +75,14 @@ public static class StartupExtensions
         }
 
         app.UseHttpsRedirection();
-
+        //app.ConfigureServicesPipeline();
+        app.UseCors("AllowAll");
+        app.UseAuthorization();
         app.UseAuthorization();
 
         app.MapControllers();
+        app.MapHub<ChatHub>("hubs/chat");
+
 
         return app;
     }

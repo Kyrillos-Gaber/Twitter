@@ -3,6 +3,8 @@
 public interface IUnitOfWork : IDisposable
 {
     ITweetRepository TweetRepository { get; }
+    
+    IUserRepository UserRepository { get; }
 
     ITagRepository TagRepository { get; }
 

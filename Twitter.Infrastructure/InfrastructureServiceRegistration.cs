@@ -15,6 +15,7 @@ public static class InfrastructureServiceRegistration
 
         services.AddScoped<ITweetRepository, TweetRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         
