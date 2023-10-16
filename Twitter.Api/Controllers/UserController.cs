@@ -17,7 +17,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateUserDto createUser)
+    public async Task<IActionResult> Create([FromForm] CreateUserDto createUser)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

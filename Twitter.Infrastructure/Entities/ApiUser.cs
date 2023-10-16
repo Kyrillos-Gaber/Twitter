@@ -16,4 +16,5 @@ public class ApiUser : IdentityUser
 
     public ICollection<Tweet>? Tweets { get; set; }
 
+    public string? ProfilePicture {  get; set; }
 }

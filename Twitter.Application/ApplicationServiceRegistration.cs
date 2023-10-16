@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +29,7 @@ public static class ApplicationServiceRegistration
         identityBuilder.AddEntityFrameworkStores<AppIdentityDbContext>();
 
         services.AddScoped<IUserManagement, UserManagement>();
+        services.AddScoped<IFileService, FileService>();
 
         services.AddSignalR();
 

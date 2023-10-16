@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Twitter.Application.Dto.User;
 
@@ -27,4 +28,5 @@ public class CreateUserDto
 
     public ICollection<string>? Roles { get; set; }
 
+    public IFormFile? ProfilePicture { get; set; }
 }

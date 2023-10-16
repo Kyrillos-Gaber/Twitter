@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.Extensions.FileProviders;
+using Microsoft.OpenApi.Models;
 using Twitter.Application;
 using Twitter.Application.Services.Implementation;
 using Twitter.Infrastructure;
@@ -73,6 +74,15 @@ public static class StartupExtensions
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        var fileProvider = Path.Combine(app.Environment.ContentRootPath, "Uploads");
+        if (!Directory.Exists(fileProvider))
+            Directory.CreateDirectory(fileProvider);
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(fileProvider),
+            RequestPath = "/resources"
+        });
 
         app.UseHttpsRedirection();
         //app.ConfigureServicesPipeline();

@@ -18,13 +18,15 @@ public class UserManagement : IUserManagement
     private readonly UserManager<ApiUser> _userManager;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
+    private readonly IFileService _fileService;
     private ApiUser? _user;
 
-    public UserManagement(UserManager<ApiUser> userManager, IConfiguration configuration, IMapper mapper)
+    public UserManagement(UserManager<ApiUser> userManager, IConfiguration configuration, IMapper mapper, IFileService fileService)
     {
         _userManager = userManager;
         _configuration = configuration;
         _mapper = mapper;
+        _fileService = fileService;
     }
 
     public async Task<string> Login(LoginDto loginDto)
@@ -47,6 +49,8 @@ public class UserManagement : IUserManagement
         createUserDto.Roles!.Add("User");
         
         ApiUser user = _mapper.Map<ApiUser>(createUserDto);
+
+        user.ProfilePicture = _fileService.SaveImage(createUserDto.ProfilePicture!);
 
         IdentityResult result = await _userManager.CreateAsync(user, createUserDto.Password);
         
