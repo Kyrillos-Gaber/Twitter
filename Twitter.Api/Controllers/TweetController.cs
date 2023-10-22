@@ -14,13 +14,11 @@ public class TweetController : ControllerBase
 {
     private readonly ITweetService _tweetService;    
 
-    public TweetController(ITweetService tweetService, IHttpContextAccessor httpContextAccessor)
+    public TweetController(ITweetService tweetService)
     {
         _tweetService = tweetService;
     }
 
-    //private string GetUserIdd()
-    
 
     [HttpGet]
     public async Task<IActionResult> GetAll()

@@ -30,6 +30,7 @@ public static class ApplicationServiceRegistration
 
         services.AddScoped<IUserManagement, UserManagement>();
         services.AddScoped<IFileService, FileService>();
+        services.AddSingleton<ChatService>();
 
         services.AddSignalR();
 
